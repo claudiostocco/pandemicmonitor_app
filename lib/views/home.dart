@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pandemicmonitor/utils/alerts.dart';
 import 'package:pandemicmonitor/widgets/separator.dart';
 
-import '../services/api/bills.dart';
-import '../types/bills_data.dart';
-import '../controllers/app_controller.dart';
 import '../widgets/drawer_item.dart';
 
 class Home extends StatefulWidget {
@@ -16,7 +12,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int _menuItem = -1;
-  List<BillsData>? _listBills = null;
 
   void _logout() {
     Navigator.pushReplacementNamed(context, '/');
@@ -24,7 +19,6 @@ class _HomeState extends State<Home> {
 
   void _setMenuItem(int item) {
     setState(() => _menuItem = item);
-    _getBills();
   }
 
   Widget _drawer() {
@@ -42,43 +36,34 @@ class _HomeState extends State<Home> {
     );
   }
 
-  void _getBills() async {
-    var response = await getBills(null);
-    if (response.success) {
-      setState(() {
-        _listBills = response.data;
-      });
-    } else {
-      await alertError(context: context, title: 'Buscar contas', msg: response.error ?? 'Erro ao buscar contas');
-    }
-  }
-
   Widget _indicator(String title, String qtd, Color backColor) {
     return Container(
       color: backColor,
-      width: 250,
-      padding: const EdgeInsets.all(45),
+      width: 190,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 25),
       child: Column(
         children: [
-          Text(style: const TextStyle(color: Colors.black, fontSize: 30), title),
-          const SizedBox(height: 20),
-          Text(style: const TextStyle(color: Colors.black, fontSize: 44), qtd)
+          Text(style: const TextStyle(color: Colors.black, fontSize: 28), title),
+          const SizedBox(height: 10),
+          Text(style: const TextStyle(color: Colors.black, fontSize: 40), qtd)
         ],)
     );
   }
 
   Widget _indicatorsPanel() {
     return Container(
-      margin: const EdgeInsets.only(top: 50),
+      margin: const EdgeInsets.only(top: 10),
       child: Expanded(
         flex: 1, 
         child: Column(children: [
-            _indicator('Infectados', '252', Colors.yellow),
+            const Text('Indicadores', style: TextStyle(fontSize: 32)),
+            const Separator(),
+            _indicator('Casos ativos', '252', Colors.yellow),
             const Separator(),
             _indicator('Curados', '2626', Colors.green),
             const Separator(),
             _indicator('Óbitos', '52', Colors.red),
-            const Separator(flex: 3)
+            const Separator(flex: 2)
           ]
         )  
       )
@@ -86,12 +71,6 @@ class _HomeState extends State<Home> {
   }
 
   Widget _listingBills() {
-    if (_listBills != null) {
-      _listBills?.forEach((element) {
-        print('${element.id} => ${element.description}, ${element.whereSpend}');
-      });
-    }
-
     switch (_menuItem) {
       case 0:
         return _indicatorsPanel();
@@ -120,7 +99,7 @@ class _HomeState extends State<Home> {
             icon: const Icon(Icons.logout),
           ),
         ],
-        title: const Text('Minhas Contas'),
+        title: const Text('Monitor de pandemia'),
       ),
       body: Center(
         child: _listingBills(),
