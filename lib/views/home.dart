@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pandemicmonitor/utils/alerts.dart';
+import 'package:pandemicmonitor/widgets/separator.dart';
 
 import '../services/api/bills.dart';
 import '../types/bills_data.dart';
@@ -32,9 +33,9 @@ class _HomeState extends State<Home> {
         // DrawerItem(userData: AppController.instance.userData, anonymous: AppController.instance.userData == null),
         DrawerItem(icon: Icons.list, title: 'Indicadores', onTap: () => _setMenuItem(0)),
         const DrawerItem(separator: true),
-        DrawerItem(icon: Icons.list, title: 'Informações', onTap: () => _setMenuItem(0)),
-        DrawerItem(icon: Icons.list, title: 'Locais de atendimento', onTap: () => _setMenuItem(1)),
-        DrawerItem(icon: Icons.list, title: 'Funcionamento do Comercio', onTap: () => _setMenuItem(2)),
+        DrawerItem(icon: Icons.list, title: 'Informações', onTap: () => _setMenuItem(1)),
+        DrawerItem(icon: Icons.list, title: 'Locais de atendimento', onTap: () => _setMenuItem(2)),
+        DrawerItem(icon: Icons.list, title: 'Funcionamento do Comercio', onTap: () => _setMenuItem(3)),
         const DrawerItem(separator: true),
         DrawerItem(icon: Icons.logout, title: 'Sair', onTap: () => {_logout()}),
       ],
@@ -52,6 +53,38 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Widget _indicator(String title, String qtd, Color backColor) {
+    return Container(
+      color: backColor,
+      width: 250,
+      padding: const EdgeInsets.all(45),
+      child: Column(
+        children: [
+          Text(style: const TextStyle(color: Colors.black, fontSize: 30), title),
+          const SizedBox(height: 20),
+          Text(style: const TextStyle(color: Colors.black, fontSize: 44), qtd)
+        ],)
+    );
+  }
+
+  Widget _indicatorsPanel() {
+    return Container(
+      margin: const EdgeInsets.only(top: 50),
+      child: Expanded(
+        flex: 1, 
+        child: Column(children: [
+            _indicator('Infectados', '252', Colors.yellow),
+            const Separator(),
+            _indicator('Curados', '2626', Colors.green),
+            const Separator(),
+            _indicator('Óbitos', '52', Colors.red),
+            const Separator(flex: 3)
+          ]
+        )  
+      )
+    );
+  }
+
   Widget _listingBills() {
     if (_listBills != null) {
       _listBills?.forEach((element) {
@@ -61,13 +94,15 @@ class _HomeState extends State<Home> {
 
     switch (_menuItem) {
       case 0:
-        return const Text('Todas as contas');
+        return _indicatorsPanel();
       case 1:
-        return const Text('Contas a vencer');
+        return const Text('Informações');
       case 2:
-        return const Text('Contas a vencidas');
+        return const Text('Locais de atendimentos');
+      case 3:
+        return const Text('Define regras para o funcionamento do comercio, como horário, restrições, distanciamento minimo, etc.');
       default:
-        return const Text('Indefinido');
+        return _indicatorsPanel();
     }
   }
 
