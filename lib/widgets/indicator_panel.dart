@@ -8,21 +8,16 @@ class IndicatorPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: Expanded(
-        flex: 1, 
+        margin: const EdgeInsets.only(top: 10),
         child: Column(children: const [
-            Text('Indicadores', style: TextStyle(fontSize: 32)),
-            Separator(),
-            Indicator(title: 'Casos ativos', qtd: '252', bgColor: Colors.yellow),
-            Separator(),
-            Indicator(title: 'Curados', qtd: '2626', bgColor: Colors.green),
-            Separator(),
-            Indicator(title: 'Óbitos', qtd: '52', bgColor: Colors.red),
-            Separator(flex: 2)
-          ]
-        )  
-      )
-    );
+          Text('Indicadores', style: TextStyle(fontSize: 32)),
+          Separator(),
+          Indicator(title: 'Casos ativos', qtd: '252', bgColor: Colors.yellow),
+          Separator(),
+          Indicator(title: 'Curados', qtd: '2627', bgColor: Colors.green),
+          Separator(),
+          Indicator(title: 'Óbitos', qtd: '52', bgColor: Colors.red),
+          Separator(flex: 2)
+        ]));
   }
 }
