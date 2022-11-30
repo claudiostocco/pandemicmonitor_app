@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:pandemicmonitor/widgets/indicator_panel.dart';
 
@@ -14,25 +16,31 @@ class _HomeState extends State<Home> {
   int _menuItem = -1;
 
   void _logout() {
-    Navigator.pushReplacementNamed(context, '/');
+    exit(0);
+    // Navigator.pushReplacementNamed(context, '/');
   }
 
   void _setMenuItem(int item) {
     setState(() => _menuItem = item);
+    context.findAncestorStateOfType<ScaffoldState>()?.openEndDrawer();
+    // Scaffold.of().closeDrawer();
   }
 
   Widget _drawer() {
-    return Column(
-      children: [
-        // DrawerItem(userData: AppController.instance.userData, anonymous: AppController.instance.userData == null),
-        DrawerItem(icon: Icons.list, title: 'Indicadores', onTap: () => _setMenuItem(0)),
-        const DrawerItem(separator: true),
-        DrawerItem(icon: Icons.list, title: 'Informações', onTap: () => _setMenuItem(1)),
-        DrawerItem(icon: Icons.list, title: 'Locais de atendimento', onTap: () => _setMenuItem(2)),
-        DrawerItem(icon: Icons.list, title: 'Funcionamento do Comercio', onTap: () => _setMenuItem(3)),
-        const DrawerItem(separator: true),
-        DrawerItem(icon: Icons.logout, title: 'Sair', onTap: () => {_logout()}),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: 16),
+      child: Column(
+        children: [
+          // DrawerItem(userData: AppController.instance.userData, anonymous: AppController.instance.userData == null),
+          DrawerItem(icon: Icons.list, title: 'Indicadores', onTap: () => _setMenuItem(0)),
+          const DrawerItem(separator: true),
+          DrawerItem(icon: Icons.list, title: 'Informações', onTap: () => _setMenuItem(1)),
+          DrawerItem(icon: Icons.list, title: 'Locais de atendimento', onTap: () => _setMenuItem(2)),
+          DrawerItem(icon: Icons.list, title: 'Funcionamento do Comercio', onTap: () => _setMenuItem(3)),
+          const DrawerItem(separator: true),
+          DrawerItem(icon: Icons.logout, title: 'Sair', onTap: () => {_logout()}),
+        ],
+      ),
     );
   }
 
@@ -45,7 +53,8 @@ class _HomeState extends State<Home> {
       case 2:
         return const Text('Locais de atendimentos');
       case 3:
-        return const Text('Define regras para o funcionamento do comercio, como horário, restrições, distanciamento minimo, etc.');
+        return const Text(
+            'Define regras para o funcionamento do comercio, como horário, restrições, distanciamento minimo, etc.');
       default:
         return const IndicatorPanel();
     }
